@@ -2,8 +2,8 @@
 
 Card này đi kèm mỗi báo cáo và được dùng lại ở Day 10. Mọi số bên dưới chép từ report do `python -m lab9.eval` sinh ra, không gõ tay.
 
-- **Run ID / eval set SHA:** baseline `E-swarm-20261117-4527` · PR `E-fixed-20261117-4527`, `E-seeded_regression-20261117-4527` · eval set `452709e1852f`
-- **Phiên bản:** code: nhánh `starter/d09` (Lab 8 = `src/` gốc Day 8 `034c6c4`, không sửa) · eval set v1 (sha `452709e1852f`) · metric_spec `1.0` · grader `lab9.graders.GRADERS` cùng commit · seeds 11/22/33/44/55 · bootstrap 1000 resample, percentile, rng 2027, 95%
+- **Run ID / eval set SHA:** baseline `E-swarm-20261117-e93c` · PR `E-fixed-20261117-e93c`, `E-seeded_regression-20261117-e93c` · eval set `e93cf28b575a`
+- **Phiên bản:** code: nhánh `starter/d09` (Lab 8 = `src/` gốc Day 8 `034c6c4`, không sửa) · eval set v1 (sha `e93cf28b575a`) · metric_spec `1.0` · grader `lab9.graders.GRADERS` cùng commit · seeds 11/22/33/44/55 · bootstrap 1000 resample, percentile, rng 2027, 95%
 - **Eval set:** v1, 14 item × 5 seed = 70 trial, nguồn `lab8_public` (T01–T14); nhãn ở `labels_v1.json`, tách khỏi item; `failure_modes` gán theo [failure_taxonomy.md](failure_taxonomy.md); `evalset --check` 0 problem.
 - **Metric & ngưỡng** (`config/metric_spec.yaml`):
 
@@ -48,7 +48,7 @@ Gate: `fixed` **exit 0 — merge**; `seeded_regression` **exit 1 — blocked: re
 
 ## v2 — slice gate, pass^k, chống gian lận eval (M5–M7)
 
-- **Run ID / eval set:** baseline `E-swarm-20261117-36f6` · eval set v2 sha `36f6be9f975d` (28 item × 5 seed = 140 trial: 14 item v1 + 14 item adversarial) · metric_spec `2.0`.
+- **Run ID / eval set:** baseline `E-swarm-20261117-c0d9` · eval set v2 sha `c0d9ad4ed2b1` (28 item × 5 seed = 140 trial: 14 item v1 + 14 item adversarial) · metric_spec `2.0`.
 - **fm_map** (`config/fm_map.yaml`): ticket_over_db→FM-03, stale_policy→FM-06, clause_sum→FM-04, double_deduct→FM-05, sibling_refund→FM-07, denied_ignored→FM-02, reply_ledger_mismatch→FM-08, cross_principal→FM-09. `evalset --v2` 0 problem. Mọi FM bị tấn công có ≥3 item: FM-02 4, FM-03 4, FM-04 8, FM-05 6, FM-06 3, FM-07 5, FM-08 4, FM-09 4.
 - **Ngưỡng chọn từ A/A** (`lab9.mutation --aa 66,77,88,99,110`): Δ = +0.0000 trên mọi metric (MockLLM deterministic; seed 110 chia hết cho 5 nên swarm lỗi giống seed 55). Với LLM thật, sampling làm hai bộ seed cho kết quả khác nhau, nên dải nhiễu A/A > 0. Khi đó sàn phải đặt **ngoài** dải này (baseline − sàn > biên độ A/A), nếu không gate sẽ chặn PR trung thực một cách ngẫu nhiên. Ở đây biên độ nhiễu là 0, nên sàn được đặt theo khoảng cách giữa baseline và các regression công khai:
   - `pass_hat_5` **min 0.85**, blocking (≥ 0.8). Baseline 0.8929; `flaky_regression` 0.5714; `slice_regression` 0.8929 (không bị `pass_hat_5` chặn, mà bị slice chặn).

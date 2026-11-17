@@ -33,6 +33,8 @@ FM_CODE = re.compile(r"FM-\d{2}")
 # ONLY that bug switch on (plus no_override) fails the item, or the item's ticket/world state sets up
 # the trap. FM-01 is on every item: each claim carries a parent_secret + Bearer canary, and the
 # leaky_trace probe fails all 14.
+# Who reviewed each v1 item's label and failure_modes against the single-bug probes and traces.
+CHECKED_BY = "Pham Tuan Cuong (label + FM tags checked against probe traces, 2026-11-17)"
 FAILURE_MODES: dict[str, list[str]] = {
     "C-001": ["FM-01", "FM-04", "FM-07"],           # O-107 shared with C-010..C-012; round_down 35k -> 30k
     "C-002": ["FM-01", "FM-03"],                    # ticket "trễ 5 ngày" vs delay_days 2 (swarm fails @55)
@@ -70,7 +72,7 @@ def build(source: Path = SOURCE) -> tuple[int, int]:
             "failure_modes": list(FAILURE_MODES.get(claim["claim_id"], [])),
             "provenance": {"source": "lab8_public", "matrix_id": claim.get("matrix_id"),
                            "from_trace": None, "generator": None,
-                           "label_by": "lab8_matrix", "checked_by": None},
+                           "label_by": "lab8_matrix", "checked_by": CHECKED_BY},
             "split": "regression",
             "eval_set_version": VERSION,
         })
